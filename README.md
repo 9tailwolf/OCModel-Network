@@ -12,7 +12,7 @@ $$
 V = \{1, 2, \dots, N\}, 
 $$
 $$ 
-E = \{(i, j) \mid A_{ij} = 1, \, i \neq j \}, 
+E = {(i, j) \mid A_{ij} = 1, \, i \neq j }, 
 $$
 $$
 A \in \{0, 1\}^{N \times N}, 
@@ -31,6 +31,8 @@ $$
 $$
 $$
 W \in \mathbb{R}^{N \times N}, 
+$$
+$$
 x_t = \lambda A x_{t-1} + (1-\lambda)x_0. \quad\forall t \in T
 $$
 

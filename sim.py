@@ -30,7 +30,7 @@ def opinion_with_dynamic_stubborn_coeff(G, initial_opinions, stubborn_coeffs, ma
 
     return np.array(opinion_history), np.array(stubborn_coeffs_history)
 
-def simulation(k,p):
+def simulation(k,p,same=False):
     iteration = 100
     dataset = []
     for v1 in tqdm(range(10,51)):
@@ -47,10 +47,14 @@ def simulation(k,p):
             for c,i in enumerate(G.nodes()):
                 if np.random.rand() < 0.5:
                     initial_opinions[i] = np.random.normal(m1, np.sqrt(v1))
+                    if same:
+                        initial_opinions[i] = min(1,max(0.001, initial_opinions[i]))
                 else:
                     initial_opinions[i] = np.random.normal(m2, np.sqrt(v2))
-
-                initial_opinions[i] = min(1,max(-1, initial_opinions[i]))
+                    if same:
+                        initial_opinions[i] = min(-0.001,max(-1, initial_opinions[i]))
+                initial_opinions[i] = min(0,max(-1, initial_opinions[i]))
+                
             stubborn_coeffs = {i:min(abs(initial_opinions[i]) / 2, 1) for i in G.nodes()}
             opinion_history, stubborn_coeffs_history = opinion_with_dynamic_stubborn_coeff(
                 G, initial_opinions, stubborn_coeffs
@@ -82,8 +86,8 @@ def simulation(k,p):
             dataset.append(res)
     return dataset
 
-k = 1000
+k = 4
 p = 0.2
 res = simulation(k,p)
-with open('sim_' + str(k) + '_' + str(int(round(p * 10))) + '.json', 'w') as f : 
+with open('results/sim_' + str(k) + '_' + str(int(round(p * 10))) + '.json', 'w') as f : 
     json.dump(res, f, indent=4)
